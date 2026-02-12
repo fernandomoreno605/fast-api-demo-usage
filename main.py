@@ -1,5 +1,7 @@
 from fastapi import FastAPI, Query
 from pydantic import BaseModel
+from database import SessionLocal, engine
+import models
 
 app = FastAPI()
 app.title = "Fernando's First FastAPI API"
@@ -13,6 +15,8 @@ app.license_info = {
   "name": "MIT",
   "url": "https://opensource.org/licenses/MIT"
 }
+
+models.Base.metadata.create_all(bind=engine)
 
 users = [
   {
