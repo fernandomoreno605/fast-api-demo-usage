@@ -1,7 +1,9 @@
 from fastapi import FastAPI, Query
 from pydantic import BaseModel
-from database import SessionLocal, engine
-import models
+
+from app import models
+from app.database import engine
+
 
 app = FastAPI()
 app.title = "Fernando's First FastAPI API"
