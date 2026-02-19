@@ -20,6 +20,8 @@ uvicorn = "==0.40.0"
 sqlalchemy = "*"
 pymysql = "*"
 python-dotenv = "*"
+alembic = "*"
+pydantic-settings = "*"
 
 [dev-packages]
 
