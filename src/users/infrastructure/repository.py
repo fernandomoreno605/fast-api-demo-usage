@@ -13,7 +13,6 @@ class SQLAlchemyUserRepository():
   
   def get_by_id(self, id: int) -> User:
     model = self.session.get(UserModel, id)
-    print("found user:", model)
     if model is None:
       raise ValueError(f"User with id {id} not found")
     return user_to_entity(model)
@@ -22,7 +21,6 @@ class SQLAlchemyUserRepository():
     model = user_to_model(user)
     self.session.add(model)
     self.session.commit()
-    self.session.refresh(model)
     return model
   
   def update(self, user: User) -> User:

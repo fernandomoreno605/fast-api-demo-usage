@@ -1,7 +1,6 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-
 from src.database import get_db
 from src.users.application.services import UserServices
 from src.users.infrastructure.repository import SQLAlchemyUserRepository
@@ -27,9 +26,11 @@ def get_users(db: Annotated[Session, Depends(get_db)]):
   return [UserOutputSchema.from_entity(user) for user in users]
 
 @router.get("/{user_id}", summary="Get a user by id", description="This is the user with the id")
-def get_user_by_id(user_id: int):
-  print("Getting user by id...")
-  return {"message": "User retrieved"}
+def get_user_by_id(user_id: int, db: Annotated[Session, Depends(get_db)]):
+  user_repository = SQLAlchemyUserRepository(session=db)
+  use_cases = UserServices(user_repository=user_repository)
+  user = use_cases.get_user(user_id)
+  return UserOutputSchema.from_entity(user)
 
 @router.patch("/{user_id}", summary="Update a user", description="This is the user with the params")
 def update_user(user_id: int, user_data: UpdateUserInputSchema, db: Annotated[Session, Depends(get_db)]):
@@ -37,7 +38,6 @@ def update_user(user_id: int, user_data: UpdateUserInputSchema, db: Annotated[Se
   user_repository = SQLAlchemyUserRepository(session=db)
   use_cases = UserServices(user_repository=user_repository)
   result = use_cases.update_user(user_id, patch_data)
-  print("Updating user...")
   return {"message": "User updated"}
 
 @router.delete("/{user_id}", summary="Delete a user", description="This is the user with the params")
