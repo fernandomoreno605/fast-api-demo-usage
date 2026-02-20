@@ -2,7 +2,7 @@ from typing import Tuple
 from pydantic import BaseModel
 from datetime import datetime
 
-from users.domain.events import UserCreated, UserEvents
+from src.users.domain.events import UserCreated, UserEvents
 
 
 class User(BaseModel):
