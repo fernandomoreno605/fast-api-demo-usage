@@ -25,5 +25,5 @@ class UserServices:
         setattr(found_user, field, value)
     return self.user_repository.update(found_user)
   
-  def delete_user(self, user_id):   
+  def delete_user(self, user_id):
     return self.user_repository.delete(user_id)

@@ -36,4 +36,9 @@ class SQLAlchemyUserRepository():
     return user_to_entity(model)
   
   def delete(self, id: int) -> None:
-    raise NotImplementedError
+    model = self.session.get(UserModel, id)
+    if model is None:
+      raise ValueError(f"User with id {id} not found")
+    self.session.delete(model)
+    self.session.commit()
+    return None

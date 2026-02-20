@@ -41,6 +41,8 @@ def update_user(user_id: int, user_data: UpdateUserInputSchema, db: Annotated[Se
   return {"message": "User updated"}
 
 @router.delete("/{user_id}", summary="Delete a user", description="This is the user with the params")
-def delete_user(user_id: int):
-  print("Deleting user...")
+def delete_user(user_id: int, db: Annotated[Session, Depends(get_db)]):
+  user_repository = SQLAlchemyUserRepository(session=db)
+  use_cases = UserServices(user_repository=user_repository)
+  use_cases.delete_user(user_id)
   return {"message": "User deleted"}
