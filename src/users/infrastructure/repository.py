@@ -12,7 +12,11 @@ class SQLAlchemyUserRepository():
     return [user_to_entity(model) for model in models]
   
   def get_by_id(self, id: int) -> User:
-    raise NotImplementedError
+    model = self.session.get(UserModel, id)
+    print("found user:", model)
+    if model is None:
+      raise ValueError(f"User with id {id} not found")
+    return user_to_entity(model)
   
   def create(self, user: User) -> User:
     model = user_to_model(user)
@@ -22,7 +26,16 @@ class SQLAlchemyUserRepository():
     return model
   
   def update(self, user: User) -> User:
-    raise NotImplementedError
+    model = self.session.get(UserModel, user.id)
+    if model is None:
+      raise ValueError(f"User with id {user.id} not found")
+
+    update_data = user.model_dump(exclude_unset=True, exclude={"id", "posts"})
+    for field, value in update_data.items():
+      setattr(model, field, value)
+
+    self.session.commit()
+    return user_to_entity(model)
   
   def delete(self, id: int) -> None:
     raise NotImplementedError

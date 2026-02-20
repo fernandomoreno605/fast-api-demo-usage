@@ -12,6 +12,12 @@ class CreateUserInputSchema(BaseModel):
   email: str = Field(..., min_length=1, max_length=100, description="User email")
   age: int | None = Field(None, ge=0, le=100, description="User age")
 
+class UpdateUserInputSchema(BaseModel):
+  name: str | None = Field(None, min_length=1, max_length=100, description="User name")
+  last_name: str | None = Field(None, min_length=1, max_length=100, description="User last name")
+  password: str | None = Field(None, min_length=1, max_length=100, description="User password")
+  email: str | None = Field(None, min_length=1, max_length=100, description="User email")
+  age: int | None = Field(None, ge=0, le=100, description="User age")
 
 class UserOutputSchema(APIOutput):
   id: int
